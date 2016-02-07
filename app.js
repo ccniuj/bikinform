@@ -10,9 +10,15 @@ var users = require('./routes/users');
 
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/bikinform');
-
 var app = express();
+
+if(app.settings.env == 'development') {
+  var db = monk('localhost:27017/bikinform');
+} else {
+  // var db = monk('heroku_mjsmdz94:e5pukcp5fijttg1l3qcjiqd9gr@ds059135.mongolab.com:59135/heroku_mjsmdz94');
+}
+
+console.log(app.settings.env);
 
 var file_name = 'test';
 var fs = require('fs');
