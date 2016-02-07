@@ -8,14 +8,19 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk('localhost:27017/bikinform');
+
 var app = express();
 
 var file_name = 'test';
 var fs = require('fs');
-
 // set scheduler, download data and transfer to json
 var exec = require('child_process').exec;
 var cmd = 'wget http://data.taipei/youbike -O ' + file_name + '.gz && gunzip ' + file_name + '.gz -f';
+var collection = db.get('youbikecollection');
+var youbike_data = {};
 
 var CronJob = require('cron').CronJob;
 new CronJob('1 * * * * *', function() {
@@ -24,20 +29,22 @@ new CronJob('1 * * * * *', function() {
     console.log("Run the command");
     // command output is in stdout
     // console.log(stdout);
+    if (fs.existsSync(file_name)) {
+      fs.readFile(file_name, 'utf8', function (err,data) {
+        if (err) {
+          return console.log(err);
+        }
+        youbike_data = JSON.parse(data);
+        collection.insert(youbike_data);
+        // console.log(youbike_data);
+        // console.log('output')
+        // eval(pry.it)
+      });
+    }
   });
 }, null, true, 'America/Los_Angeles');
 
-var youbike_data = {};
-if (fs.existsSync(file_name)) {
-  fs.readFile(file_name, 'utf8', function (err,data) {
-    if (err) {
-      return console.log(err);
-    }
-    youbike_data = JSON.parse(data);
-    console.log(youbike_data);
-    // eval(pry.it)
-  });
-}
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -50,6 +57,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(function(req,res,next){
+    req.db = db;
+    next();
+});
 
 app.use('/', routes);
 app.use('/users', users);

@@ -20,6 +20,8 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+// websocket
 var io = require('socket.io')(server);
 
 io.on('connection', function(socket){
@@ -34,6 +36,13 @@ io.on('connection', function(socket){
     console.log('user disconnected');
   });
 });
+
+var CronJob = require('cron').CronJob;
+new CronJob('1 * * * * *', function() {
+  console.log('emit');
+  io.emit('update data', { test: 'hello' });
+}, null, true, 'America/Los_Angeles');
+
 /**
  * Listen on provided port, on all network interfaces.
  */

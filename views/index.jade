@@ -20,6 +20,13 @@ block content
             h3.box-title Youbike租借活躍指數
           .box-body
             #map(style="width:100%;height:500px;")
+            #db
+              //- each v, k in data[0]['retVal']
+              //-   each a, b in v
+              //-     h6= b + ':' + a
+              //-   hr
+              each v, k in data
+                h6= k
   script(src="/socket.io/socket.io.js")
   script(src="http://code.jquery.com/jquery-1.11.1.js")
   script(src="http://maps.googleapis.com/maps/api/js")
@@ -30,9 +37,9 @@ block content
     //-   $('#m').val('');
     //-   return false;
     //- });
-    //- socket.on('chat message', function(msg){
-    //-   $('#messages').append($('<li>').text(msg));
-    //- });
+    socket.on('update data', function(msg){
+      $('#db').append($('<h6>').text(msg.test));
+    });
   script(type='text/javascript').
     function initMap() {
       var map = new google.maps.Map(document.getElementById('map'), {
