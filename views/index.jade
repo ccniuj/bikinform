@@ -20,8 +20,20 @@ block content
             h3.box-title Youbike租借活躍指數
           .box-body
             #map(style="width:100%;height:500px;")
+  script(src="/socket.io/socket.io.js")
+  script(src="http://code.jquery.com/jquery-1.11.1.js")
   script(src="http://maps.googleapis.com/maps/api/js")
-  script.
+  script(type='text/javascript').
+    var socket = io();
+    //- $('form').submit(function(){
+    //-   socket.emit('chat message', $('#m').val());
+    //-   $('#m').val('');
+    //-   return false;
+    //- });
+    //- socket.on('chat message', function(msg){
+    //-   $('#messages').append($('<li>').text(msg));
+    //- });
+  script(type='text/javascript').
     function initMap() {
       var map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 25.06, lng: 121.55},
