@@ -5,29 +5,27 @@ block content
     .container
       // Content Header (Page header)
       section.content-header
-        h1
-          | Top Navigation
-          small Example 2.0
-        ol.breadcrumb
-          li
-            a(href='#')
-              i.fa.fa-dashboard
-              |  Home
-          li
-            a(href='#') Layout
-          li.active Top Navigation
+        //- h1 Youbike租借活躍指數
+        //- ol.breadcrumb
+        //-   li
+        //-     a(href='#')
+        //-       i.fa.fa-dashboard
+        //-       |  Home
+        //-   li
+        //-     a(href='#') Layout
+        //-   li.active Top Navigation
       section.content
         .box.box-primary
           .box-header.with-border
-            h3.box-title Blank Box
+            h3.box-title Youbike租借活躍指數
           .box-body
             #map(style="width:100%;height:500px;")
   script(src="http://maps.googleapis.com/maps/api/js")
   script.
     function initMap() {
       var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: -34.397, lng: 150.644},
-        zoom: 6
+        center: {lat: 25.06, lng: 121.55},
+        zoom: 13
       });
       //- var infoWindow = new google.maps.InfoWindow({map: map});
 
@@ -38,15 +36,15 @@ block content
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
-          var marker = new google.maps.Marker({
-            position: pos,
-            map: map,
-            title: 'Hello World!'
-          });
+          //- var marker = new google.maps.Marker({
+          //-   position: pos,
+          //-   map: map,
+          //-   title: 'Hello World!'
+          //- });
           //- infoWindow.setPosition(pos);
           //- infoWindow.setContent('Location found.');
           
-          map.setCenter(pos);
+          //- map.setCenter(pos);
         }, function() {
           handleLocationError(true, infoWindow, map.getCenter());
         });
