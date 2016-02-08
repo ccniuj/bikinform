@@ -41,17 +41,17 @@ var CronJob = require('cron').CronJob;
 new CronJob('1 * * * * *', function() {
   console.log('emit');
   Youbike.find(function (err, docs) {
-    // var data = JSON.parse(docs[0]['raw'])['retVal'];
-    // for (var k in data) {
-    //   for (var p in data[k]) {
-    //     if ((p == 'lat') || (p == 'lng')) {
-    //       data[k][p] = parseFloat(data[k][p]);
-    //     } else {
-    //       delete data[k][p];
-    //     }
-    //   }
-    //   io.emit('update data', { lat: data[k]['lat'], lng: data[k]['lng'] });
-    // }
+    var data = JSON.parse(docs[0]['raw'])['retVal'];
+    for (var k in data) {
+      for (var p in data[k]) {
+        if ((p == 'lat') || (p == 'lng')) {
+          data[k][p] = parseFloat(data[k][p]);
+        } else {
+          delete data[k][p];
+        }
+      }
+      io.emit('update data', { lat: data[k]['lat'], lng: data[k]['lng'] });
+    }
   });
 
 }, null, true, 'America/Los_Angeles');
