@@ -6,4 +6,7 @@
 TODO
 *.zip
 *.log
-/data/
+data/
+/test
+/test.js
+npm-debug.log
