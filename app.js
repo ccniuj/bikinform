@@ -16,7 +16,8 @@ if(app.settings.env == 'development') {
   var db = monk('localhost:27017/bikinform');
 } else {
   var db = monk('heroku_mjsmdz94:e5pukcp5fijttg1l3qcjiqd9gr@ds059135.mongolab.com:59135/heroku_mjsmdz94');
-  console.log('production');
+  // console.log('production');
+  console.log(db);
 }
 
 var file_name = 'test';
