@@ -32,7 +32,6 @@ var CronJob = require('cron').CronJob;
 new CronJob('1 * * * * *', function() {
   // console.log('You will see this message every minute');
   exec(cmd, function(error, stdout, stderr) {
-    console.log("Run the command");
     // command output is in stdout
     // console.log(stdout);
     if (fs.existsSync(file_name)) {
@@ -41,7 +40,13 @@ new CronJob('1 * * * * *', function() {
           return console.log(err);
         }
         youbike_data = JSON.parse(data);
-        collection.insert(youbike_data);
+        collection.insert(youbike_data, function (err, doc) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log('success');
+          }
+        });
         console.log(youbike_data);
         // console.log(youbike_data);
         // console.log('output')
