@@ -9,23 +9,34 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var mongo = require('mongodb');
-var monk = require('monk');
+// var monk = require('monk');
+var mongoose = require('mongoose');
+
 var app = express();
 
 if(app.settings.env == 'development') {
-  var db = monk('localhost:27017/bikinform');
+  // var db = monk('localhost:27017/bikinform');
+  mongoose.connect('mongodb://localhost:27017/bikinform')
 } else {
-  var db = monk('heroku_mjsmdz94:e5pukcp5fijttg1l3qcjiqd9gr@ds059135.mongolab.com:59135/heroku_mjsmdz94');
-  // console.log('production');
-  console.log(db);
+  // var db = monk('heroku_mjsmdz94:e5pukcp5fijttg1l3qcjiqd9gr@ds059135.mongolab.com:59135/heroku_mjsmdz94');
+  mongoose.connect(process.env.MONGOLAB_URI)
 }
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('DB connected');
+});
+var youbike_schema = mongoose.Schema({
+  sno: String
+});
+Youbike = mongoose.model('youbike_collection', youbike_schema);
 
 var file_name = 'test';
 var fs = require('fs');
 // set scheduler, download data and transfer to json
 var exec = require('child_process').exec;
 var cmd = 'wget http://data.taipei/youbike -O ' + file_name + '.gz && gunzip ' + file_name + '.gz -f';
-var collection = db.get('youbikecollection');
+// var collection = db.get('youbikecollection');
 var youbike_data = {};
 
 var CronJob = require('cron').CronJob;
@@ -40,14 +51,15 @@ new CronJob('1 * * * * *', function() {
           return console.log(err);
         }
         youbike_data = JSON.parse(data);
-        collection.insert(youbike_data, function (err, doc) {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log('success');
-          }
+
+        var test = new Youbike({ sno: '0001' });
+        test.save(function (err, s) {
+          if (err) return console.error(err);
         });
-        console.log(youbike_data);
+        Youbike.find(function (err, y) {
+          if (err) return console.error(err);
+          console.log(y);
+        })
         // console.log(youbike_data);
         // console.log('output')
         // eval(pry.it)

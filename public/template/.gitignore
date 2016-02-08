@@ -9,3 +9,4 @@ test.html
 *.log
 test.html
 mongo.js
+/data/
