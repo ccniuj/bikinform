@@ -15,10 +15,9 @@ var app = express();
 if(app.settings.env == 'development') {
   var db = monk('localhost:27017/bikinform');
 } else {
-  // var db = monk('heroku_mjsmdz94:e5pukcp5fijttg1l3qcjiqd9gr@ds059135.mongolab.com:59135/heroku_mjsmdz94');
+  var db = monk('heroku_mjsmdz94:e5pukcp5fijttg1l3qcjiqd9gr@ds059135.mongolab.com:59135/heroku_mjsmdz94');
+  console.log('production');
 }
-
-console.log(app.settings.env);
 
 var file_name = 'test';
 var fs = require('fs');
@@ -42,6 +41,7 @@ new CronJob('1 * * * * *', function() {
         }
         youbike_data = JSON.parse(data);
         collection.insert(youbike_data);
+        console.log(youbike_data);
         // console.log(youbike_data);
         // console.log('output')
         // eval(pry.it)
