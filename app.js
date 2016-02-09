@@ -10,6 +10,7 @@ var users = require('./routes/users');
 
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
+var compute = require('./compute');
 
 var app = express();
 
@@ -47,13 +48,15 @@ new CronJob('1 * * * * *', function() {
         if (err) {
           return console.log(err);
         }
-        // youbike_data = JSON.parse(data);
         var test = new Youbike({ raw: data, timestamp: new Date() });
         test.save(function (err, s) {
           if (err) return console.error(err);
         });
       });
     }
+  });
+  Youbike.find(function (err, docs) {
+    compute.test(docs);
   });
 }, null, true, 'America/Los_Angeles');
 

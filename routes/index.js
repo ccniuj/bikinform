@@ -5,7 +5,6 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
 	Youbike.find(function (err, docs) {
     if (err) return console.error(err);
-    // console.log(docs);
     res.render('index', {
       "data" : docs
     });
