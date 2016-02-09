@@ -2,13 +2,10 @@ module.exports = {
   foo: function (data) {
     console.log(data);
   },
-  difference: function (data) {
-
-  },
-  test: function (docs) {
+  difference_btw_n_minutes: function (docs, n) {
     var arr = [];
     var current_index = docs.length - 1;
-    var interval = 10;
+    var interval = n;
     var past_index = current_index - interval;
     filtered_docs = [docs[current_index], docs[past_index]];
     filtered_docs.forEach(function (doc, i) {
