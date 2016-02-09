@@ -56,6 +56,9 @@ new CronJob('1 * * * * *', function() {
     }
   });
   Youbike.find(function (err, docs) {
+    docs[0].remove(function(){
+      console.log('remove first instance of data');
+    });
     compute.difference_btw_n_minutes(docs, 10);
   });
 }, null, true, 'America/Los_Angeles');
