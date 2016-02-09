@@ -7,20 +7,28 @@ module.exports = {
   },
   test: function (docs) {
     var arr = [];
-    docs.forEach(function (doc, i) {
-      var data = JSON.parse(doc['raw'])['retVal'];
-      for (var k in data) {
-        for (var p in data[k]) {
+    var current_index = docs.length - 1;
+    var interval = 10;
+    var past_index = current_index - interval;
+    filtered_docs = [docs[current_index], docs[past_index]];
+    filtered_docs.forEach(function (doc, i) {
+      var current_doc = JSON.parse(doc['raw'])['retVal'];
+      for (var k in current_doc) {
+        for (var p in current_doc[k]) {
           if ((p == 'lat') || (p == 'lng') || (p == 'tot') || (p == 'sbi')) {
-            data[k][p] = parseFloat(data[k][p]);
+            current_doc[k][p] = parseFloat(current_doc[k][p]);
           } else {
-            delete data[k][p];
+            delete current_doc[k][p];
           }
         }
         // compute.foo(data[k]);
         // console.log(i + ',' + k);
-        if (i == (docs.length-1)) {
-        	arr.push({lat: data[k]['lat'], lng: data[k]['lng']})
+        if (i == (filtered_docs.length-1)) {
+          var past_doc = JSON.parse(filtered_docs[0]['raw'])['retVal'];
+          var sbi_diff = current_doc[k]['sbi'] - past_doc[k]['sbi'];
+          // console.log(filtered_docs.length);
+        	arr.push({pos: {lat: current_doc[k]['lat'], lng: current_doc[k]['lng']}, 
+                    diff: sbi_diff});
         }
       }
     })

@@ -27,6 +27,7 @@ block content
   script(type='text/javascript').
     var map;
     var markers = [];
+    var diffs = [];
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 25.06, lng: 121.55},
@@ -60,11 +61,11 @@ block content
                             'Error: The Geolocation service failed.' :
                             'Error: Your browser doesn\'t support geolocation.');
     }
-    function marker(pos, map) {
+    function marker(pos, map, icon_url) {
       var marker = new google.maps.Marker({
         position: pos,
         map: map,
-        icon: '/images/dot_15.png',
+        icon: icon_url,
         title: 'Hello World!'
       });
       markers.push(marker);
@@ -84,10 +85,22 @@ block content
     socket.on('update data', function(data){
       remove_markers();
       console.log('update');
-      console.log(data.length);
-
+      diffs = [];
       data.forEach(function (d) {
-        marker(d, map);
+        diffs.push(d.diff);
+        var icon_url = '';
+        if (d.diff > 4) {
+          icon_url = '/images/5.png';
+        } else if ((4 >= d.diff) && (d.diff > 2)) {
+          icon_url = '/images/4.png';
+        } else if (Math.abs(d.diff) <= 2) {
+          icon_url = '/images/3.png';
+        } else if ((-2 > d.diff) && (d.diff >= -4)) {
+          icon_url = '/images/2.png';
+        } else {
+          icon_url = '/images/1.png';
+        }
+        marker(d.pos, map, icon_url);
       })
     });
 
