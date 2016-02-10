@@ -27,7 +27,7 @@ io = require('socket.io')(server);
 
 io.on('connection', function(socket){
   console.log('a user connected');
-  Youbike.find(function (err, docs) {
+  Youbike.find({}, null, {sort: {timestamp: 1}}, function (err, docs) {
     compute.difference_btw_n_minutes(docs, 10);
   });
 

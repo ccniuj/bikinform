@@ -9,6 +9,7 @@ module.exports = {
     var past_index = current_index - interval;
     filtered_docs = [docs[current_index], docs[past_index]];
     filtered_docs.forEach(function (doc, i) {
+      console.log(i + ' ' + typeof(doc['timestamp']) + ' ' + doc['timestamp']) ;
       var current_doc = JSON.parse(doc['raw'])['retVal'];
       for (var k in current_doc) {
         for (var p in current_doc[k]) {
