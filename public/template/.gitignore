@@ -10,3 +10,4 @@ data/
 test
 test.js
 npm-debug.log
+!*.*
