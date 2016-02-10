@@ -7,6 +7,6 @@ TODO
 *.zip
 *.log
 data/
-/test
-/test.js
+test
+test.js
 npm-debug.log
