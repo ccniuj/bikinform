@@ -1,5 +1,6 @@
 /node_modules/*/node-modules/
 data/
+npm-debug.log
 test
 test.gz
 test.js

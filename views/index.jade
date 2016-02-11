@@ -1,50 +1,6 @@
 extends layout
 
 block content
-  style.
-    body {
-    background-color: #FFFFFF;
-    }
-    #test .arc2 {
-    stroke-weight:0.1;
-    fill: #3660b0;
-    }
-    #outer {
-    background:#FFFFFF;
-    border-radius: 5px;
-    color: #000;
-    }
-    #div1, #div2, #div3, #div4 {
-    width: 33%;
-    height: 200px;
-    box-sizing: border-box;
-    float: left;
-    }
-    #div2 .arc {
-    stroke-weight: 0.1;
-    fill: #f0a417;
-    }
-    #div2 .arc2 {
-    stroke-weight: 0.1;
-    fill: #b00d08;
-    }
-    #div3 .arc {
-    stroke-weight: 0.1;
-    fill: #1d871b;
-    }
-    .selectedRadial {
-    border-radius: 3px;
-    background: #f4f4f4;
-    color: #000;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
-    -moz-box-shadow: 0 1px 5px rgba(0,0,0,0.4);
-    border: 1px solid rgba(200,200,200,0.85);
-    }
-    .radial {
-    border-radius: 3px;
-    background: #FFFFFF;
-    color: #000;
-    }
   .content-wrapper
     .container
       // Content Header (Page header)
@@ -66,10 +22,11 @@ block content
             #map(style="width:100%;height:500px;")
             #db
             #outer(style='margin-top:40px; padding:10px')
-              #main(style='width:600px; height:200px; margin: 0px auto; ')
-                #div1
-                #div2
-                #div3
+              #main
+                .row
+                  #div1.col-md-4
+                  #div2.col-md-4
+                  #div3.col-md-4
   script(src="/socket.io/socket.io.js")
   script(src="http://code.jquery.com/jquery-1.11.1.js")
   script(src="https://maps.googleapis.com/maps/api/js")
@@ -154,7 +111,9 @@ block content
     });
 
     initMap();
-  script(language='JavaScript').
+  script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.14/d3.min.js')
+  script(type='text/javascript', src='/javascripts/radial.js')
+  script(type='text/javascript').
     var div1=d3.select(document.getElementById('div1'));
     var div2=d3.select(document.getElementById('div2'));
     var div3=d3.select(document.getElementById('div3'));
