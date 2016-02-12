@@ -50,7 +50,7 @@ body {
 .component .label {
   font-family: Myriad, "Helvetic Neue", Helvetica, Arial;
   text-anchor: middle;
-  fill: #0000FF;
+  fill: #000;
 }
 .arc {
   stroke-weight:0.1;
@@ -63,6 +63,7 @@ body {
 .label {
   font-family:  Myriad, "Helvetic Neue", Helvetica, Arial;
   text-anchor: middle;
+  font-size: 16px;
 }
 .radial-svg {
   display: block;

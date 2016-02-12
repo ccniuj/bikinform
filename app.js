@@ -37,7 +37,7 @@ var exec = require('child_process').exec;
 var cmd = 'wget http://data.taipei/youbike -O ' + file_name + '.gz && gunzip ' + file_name + '.gz -f';
 // var collection = db.get('youbikecollection');
 // var youbike_data = {};
-
+var n = 10;
 var CronJob = require('cron').CronJob;
 new CronJob('1 * * * * *', function() {
   exec(cmd, function(error, stdout, stderr) {
@@ -56,7 +56,12 @@ new CronJob('1 * * * * *', function() {
     }
   });
   Youbike.find({}, null, {sort: {timestamp: 1}}, function (err, docs) {
-    compute.difference_btw_n_minutes(docs, 10);
+    if (docs.length > n){
+      docs[0].remove(function(){
+        console.log('remove first instance of data');
+      });
+    }
+    compute.difference_btw_n_minutes(docs, n);
   });
 }, null, true, 'America/Los_Angeles');
 

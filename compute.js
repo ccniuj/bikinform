@@ -4,9 +4,6 @@ module.exports = {
   },
   difference_btw_n_minutes: function (docs, n) {
     if (docs.length > n) {
-      docs[0].remove(function(){
-        console.log('remove first instance of data');
-      });
       var arr = [];
       var current_index = docs.length - 1;
       var interval = n;
