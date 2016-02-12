@@ -11,10 +11,9 @@ body {
   color: #000;
 }
 #div1, #div2, #div3, #div4 {
-  width: 33%;
-  height: 200px;
   box-sizing: border-box;
   float: left;
+  padding-left: 10%;
 }
 #div2 .arc {
   stroke-weight: 0.1;
@@ -68,4 +67,11 @@ body {
 .radial-svg {
   display: block;
   margin: 0 auto;
+  width: 100%;
+}
+.radial-svg > g {
+  width: 100%;
+}
+.component {
+  width: 100%;
 }
