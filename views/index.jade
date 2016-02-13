@@ -114,7 +114,7 @@ block content
       .title(title)
       .onClick(onClick1)
       .diameter(170)
-      .value(percentage)
+      .value(Math.abs(percentage))
       .render();
 
       document.getElementById("main").appendChild(div);

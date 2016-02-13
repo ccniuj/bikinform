@@ -4,7 +4,8 @@ module.exports = {
   },
   difference_btw_n_minutes: function (docs, n) {
     if (docs.length > n) {
-      var arr = [];
+      var markers = [];
+      var chart = {};
       var current_index = docs.length - 1;
       var interval = n;
       var past_index = current_index - interval;
@@ -15,8 +16,12 @@ module.exports = {
         var current_doc = JSON.parse(doc['raw'])['retVal'];
         for (var k in current_doc) {
           for (var p in current_doc[k]) {
-            if ((p == 'lat') || (p == 'lng') || (p == 'tot') || (p == 'sbi')) {
+            if ((p == 'lat') || 
+                (p == 'lng') || 
+                (p == 'tot') || 
+                (p == 'sbi') ) {
               current_doc[k][p] = parseFloat(current_doc[k][p]);
+            } else if (p == 'sna') {
             } else {
               delete current_doc[k][p];
             }
@@ -27,22 +32,42 @@ module.exports = {
             var past_doc = JSON.parse(filtered_docs[0]['raw'])['retVal'];
             var sbi_diff = current_doc[k]['sbi'] - past_doc[k]['sbi'];
             // console.log(filtered_docs.length);
-            arr.push({
+            markers.push({
               pos: {lat: current_doc[k]['lat'], lng: current_doc[k]['lng']},
               diff: sbi_diff,
-              tol: current_doc[k]['tot']
+              sna: current_doc[k]['sna'],
+              diff_ratio: 100*sbi_diff/current_doc[k]['tot'],
+              sbi_ratio: 100*current_doc[k]['sbi']/current_doc[k]['tot']
             });
           }
         }
       })
-      console.log('emit')
+      
+      var markers_sort_by_sbi_ratio = markers.slice().sort(function (m, n) {
+        return m['sbi_ratio'] - n['sbi_ratio'];
+      }).reverse();
+      
+      var markers_sort_by_diff_ratio = markers.slice().sort(function (m, n) {
+        return m['diff_ratio'] - n['diff_ratio'];
+      })
+      // console.log(markers_sort_by_sbi_ratio);
+      var min_diff_ratio_element = markers_sort_by_diff_ratio[0];
+      var max_diff_ratio_element = markers_sort_by_diff_ratio[markers.length-1];
+      var max_sbi_ratio_element = markers_sort_by_sbi_ratio[0];
+      // console.log(max_sbi_ratio);
+      // console.log(max_diff_ratio);
+      // console.log(min_diff_ratio);
+      chart['最高出租率'] = {};
+      chart['最高歸還率'] = {};
+      chart['最高存留率'] = {};
+      chart['最高出租率'][min_diff_ratio_element['sna']] = min_diff_ratio_element['diff_ratio'];
+      chart['最高歸還率'][max_diff_ratio_element['sna']] = max_diff_ratio_element['diff_ratio'];
+      chart['最高存留率'][max_sbi_ratio_element['sna']] = max_sbi_ratio_element['sbi_ratio'];
+
+      console.log('emit');
       io.emit('update data', {
-        'marker': arr,
-        'chart': {
-          '最高出租率': {'test1': 70},
-          '最高歸還率': {'test2': 65},
-          '最高存留率': {'test3': 90} 
-        }
+        'marker': markers,
+        'chart': chart
       });
     } else {
       console.log('Data number less than n rows');
