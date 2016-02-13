@@ -10,23 +10,23 @@ body {
   border-radius: 5px;
   color: #000;
 }
-#div1, #div2, #div3, #div4 {
+/*#div1, #div2, #div3, #div4 {
   box-sizing: border-box;
   float: left;
   padding-left: 10%;
-}
-#div2 .arc {
+}*/
+path.arc {
   stroke-weight: 0.1;
-  fill: #f0a417;
+  fill: #3C8DBC;
 }
-#div2 .arc2 {
+path.arc2 {
   stroke-weight: 0.1;
   fill: #b00d08;
 }
-#div3 .arc {
+/*#div3 .arc {
   stroke-weight: 0.1;
   fill: #1d871b;
-}
+}*/
 .selectedRadial {
   border-radius: 3px;
   background: #f4f4f4;
@@ -51,6 +51,7 @@ body {
   font-family: Myriad, "Helvetic Neue", Helvetica, Arial;
   text-anchor: middle;
   fill: #000;
+  font-size: 20px;
 }
 .arc {
   stroke-weight:0.1;
@@ -69,10 +70,18 @@ body {
   display: block;
   margin: 0 auto;
   width: 100%;
+  height: 200px;
+
 }
 .radial-svg > g {
   width: 100%;
 }
 .component {
   width: 100%;
+}
+.title {
+  font-family:  Myriad, "Helvetic Neue", Helvetica, Arial;
+  text-anchor: middle;
+  fill: #000;
+  font-size: 16px;
 }

@@ -22,11 +22,10 @@ block content
             #map(style="width:100%;height:500px;")
             #db
             #outer(style='margin-top:40px; padding:10px')
-              #main
-                .row
-                  #div1.col-xs-12.col-sm-4.col-md-4
-                  #div2.col-xs-12.col-sm-4.col-md-4
-                  #div3.col-xs-12.col-sm-4.col-md-4
+              #main.row
+                #div1.
+                #div2.col-xs-12.col-sm-4.col-md-4
+                #div3.col-xs-12.col-sm-4.col-md-4
   script(src="/socket.io/socket.io.js")
   script(src="http://code.jquery.com/jquery-1.11.1.js")
   script(src="https://maps.googleapis.com/maps/api/js")
@@ -84,10 +83,9 @@ block content
       }
       markers = [];
     }
-    var div1=d3.select(document.getElementById('div1'));
-    var div2=d3.select(document.getElementById('div2'));
-    var div3=d3.select(document.getElementById('div3'));
-    var div4=d3.select(document.getElementById('div4'));
+    function remove_chart() {
+      document.getElementById('main').innerHTML = '';
+    }
     function onClick1() {
       deselect();
       div1.attr("class","selectedRadial");
@@ -107,27 +105,48 @@ block content
       div2.attr("class","radial");
       div3.attr("class","radial");
     }
-    function start() {
-      var rp1 = radialProgress(document.getElementById('div1'))
-      .label("RADIAL 1")
+    function start(label, title, percentage) {
+      var div = document.createElement("div");
+      div.className = 'col-xs-12 col-sm-4 col-md-4';
+      div.style = 'box-sizing:border-box;float:left;padding-left:8%;'
+      var rp1 = radialProgress(div)
+      .label(label)
+      .title(title)
       .onClick(onClick1)
-      .diameter(150)
-      .value(78)
+      .diameter(170)
+      .value(percentage)
       .render();
-      var rp2 = radialProgress(document.getElementById('div2'))
-      .label("RADIAL 2")
-      .onClick(onClick2)
-      .diameter(150)
-      .value(132)
-      .render();
-      var rp3 = radialProgress(document.getElementById('div3'))
-      .label("RADIAL 3")
-      .onClick(onClick3)
-      .diameter(150)
-      .minValue(100)
-      .maxValue(200)
-      .value(150)
-      .render();
+
+      document.getElementById("main").appendChild(div);
+      //- var rp2 = radialProgress(document.getElementById('div2'))
+      //- .label("RADIAL 2")
+      //- .onClick(onClick2)
+      //- .diameter(150)
+      //- .value(132)
+      //- .render();
+      //- var rp3 = radialProgress(document.getElementById('div3'))
+      //- .label("RADIAL 3")
+      //- .onClick(onClick3)
+      //- .diameter(150)
+      //- .minValue(100)
+      //- .maxValue(200)
+      //- .value(150)
+      //- .render();
+    }
+    function put_marker(d) {
+      var icon_url = '';
+      if (d.diff > 4) {
+        icon_url = '/images/5.png';
+      } else if ((4 >= d.diff) && (d.diff > 2)) {
+        icon_url = '/images/4.png';
+      } else if (Math.abs(d.diff) <= 2) {
+        icon_url = '/images/3.png';
+      } else if ((-2 > d.diff) && (d.diff >= -4)) {
+        icon_url = '/images/2.png';
+      } else {
+        icon_url = '/images/1.png';
+      }
+      marker(d.pos, map, icon_url);
     }
     var socket = io();
     //- $('form').submit(function(){
@@ -137,25 +156,18 @@ block content
     //- });
     socket.on('update data', function(data){
       remove_markers();
+      remove_chart();
       console.log('update');
-      diffs = [];
-      data.forEach(function (d) {
-        diffs.push(d.diff);
-        var icon_url = '';
-        if (d.diff > 4) {
-          icon_url = '/images/5.png';
-        } else if ((4 >= d.diff) && (d.diff > 2)) {
-          icon_url = '/images/4.png';
-        } else if (Math.abs(d.diff) <= 2) {
-          icon_url = '/images/3.png';
-        } else if ((-2 > d.diff) && (d.diff >= -4)) {
-          icon_url = '/images/2.png';
-        } else {
-          icon_url = '/images/1.png';
-        }
-        marker(d.pos, map, icon_url);
+      marker_data = data['marker'];
+      chart_data = data['chart'];
+      marker_data.forEach(function (d) {
+        put_marker(d);
       })
-      start();
+      for (var k in chart_data) {
+        for (var p in chart_data[k]) {
+          start(p, k, chart_data[k][p]);
+        }
+      }
     });
 
     initMap();

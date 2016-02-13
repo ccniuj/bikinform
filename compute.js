@@ -27,13 +27,23 @@ module.exports = {
             var past_doc = JSON.parse(filtered_docs[0]['raw'])['retVal'];
             var sbi_diff = current_doc[k]['sbi'] - past_doc[k]['sbi'];
             // console.log(filtered_docs.length);
-            arr.push({pos: {lat: current_doc[k]['lat'], lng: current_doc[k]['lng']}, 
-                      diff: sbi_diff});
+            arr.push({
+              pos: {lat: current_doc[k]['lat'], lng: current_doc[k]['lng']},
+              diff: sbi_diff,
+              tol: current_doc[k]['tot']
+            });
           }
         }
       })
       console.log('emit')
-      io.emit('update data', arr);
+      io.emit('update data', {
+        'marker': arr,
+        'chart': {
+          '最高出租率': {'test1': 70},
+          '最高歸還率': {'test2': 65},
+          '最高存留率': {'test3': 90} 
+        }
+      });
     } else {
       console.log('Data number less than n rows');
     }

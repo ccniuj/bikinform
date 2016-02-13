@@ -7,6 +7,7 @@ function radialProgress(parent) {
         __height = 300,
         _diameter = 150,
         _label="",
+        _title="",
         _fontSize=10;
 
 
@@ -50,6 +51,11 @@ function radialProgress(parent) {
 
 
             _arc.endAngle(360 * (Math.PI/180))
+
+            background.append("text")
+                .attr("class", "title")
+                .attr("transform", "translate(" + _width/2 + "," + (_width + _fontSize + 30) + ")")
+                .text(_title);
 
             background.append("rect")
                 .attr("class","background")
@@ -213,6 +219,12 @@ function radialProgress(parent) {
     component.label = function(_) {
         if (!arguments.length) return _label;
         _label = _;
+        return component;
+    };
+
+    component.title = function(_) {
+        if (!arguments.length) return _title;
+        _title = _;
         return component;
     };
 
