@@ -54,12 +54,27 @@ module.exports = {
       var min_diff_ratio_element = markers_sort_by_diff_ratio[0];
       var max_diff_ratio_element = markers_sort_by_diff_ratio[markers.length-1];
       var max_sbi_ratio_element = markers_sort_by_sbi_ratio[0];
-      // console.log(max_sbi_ratio);
-      // console.log(max_diff_ratio);
-      // console.log(min_diff_ratio);
+      
+      markers.forEach(function (m) {
+        if ((m.sna == min_diff_ratio_element.sna) && (m.sna == max_sbi_ratio_element.sna)) {
+          m['info'] = '最高出租率、最高存留率'
+        } else if ((m.sna == max_diff_ratio_element.sna) && (m.sna == max_sbi_ratio_element.sna)) {
+          m['info'] = '最高歸還率、最高存留率';
+        } else if (m.sna == min_diff_ratio_element.sna) {
+          m['info'] = '最高出租率';
+        } else if (m.sna == max_diff_ratio_element.sna) {
+          m['info'] = '最高歸還率';
+        } else if (m.sna == max_sbi_ratio_element.sna) {
+          m['info'] = '最高存留率';
+        } else {}
+      })
+
       chart['最高出租率'] = {};
       chart['最高歸還率'] = {};
       chart['最高存留率'] = {};
+      // chart['最高出租率'] = min_diff_ratio_element;
+      // chart['最高歸還率'] = max_diff_ratio_element;
+      // chart['最高存留率'] = max_sbi_ratio_element;
       chart['最高出租率'][min_diff_ratio_element['sna']] = min_diff_ratio_element['diff_ratio'];
       chart['最高歸還率'][max_diff_ratio_element['sna']] = max_diff_ratio_element['diff_ratio'];
       chart['最高存留率'][max_sbi_ratio_element['sna']] = max_sbi_ratio_element['sbi_ratio'];
