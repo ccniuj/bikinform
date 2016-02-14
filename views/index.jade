@@ -3,24 +3,23 @@ extends layout
 block content
   .content-wrapper
     .container
-      // Content Header (Page header)
-      section.content-header
-        //- h1 Youbike租借活躍指數
-        //- ol.breadcrumb
-        //-   li
-        //-     a(href='#')
-        //-       i.fa.fa-dashboard
-        //-       |  Home
-        //-   li
-        //-     a(href='#') Layout
-        //-   li.active Top Navigation
       section.content
         .box.box-primary
           .box-header.with-border
-            h3.box-title Youbike租借活躍指數
+            h3.box-title Youbike各站點存留變化率
           .box-body
             #map(style="width:100%;height:500px;")
-            #db
+            #scale
+              img(src='/images/5.png', style='margin-left:20px;margin-right:5px;')
+              b > 15%
+              img(src='/images/4.png', style='margin-left:20px;margin-right:5px;')
+              b > 5%
+              img(src='/images/3.png', style='margin-left:20px;margin-right:5px;')
+              b < ±5%
+              img(src='/images/2.png', style='margin-left:20px;margin-right:5px;')
+              b < -5%
+              img(src='/images/1.png', style='margin-left:20px;margin-right:5px;')
+              b < -15%
             #outer(style='margin-top:40px; padding:10px')
               #main.row
   script(src="/socket.io/socket.io.js")
@@ -32,6 +31,9 @@ block content
     var map;
     var markers = [];
     var diffs = [];
+    var ratio_threshold_high = 15;
+    var ratio_threshold_low = 5;
+
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 25.06, lng: 121.55},
@@ -94,24 +96,14 @@ block content
     function remove_chart() {
       document.getElementById('main').innerHTML = '';
     }
-    function onClick1() {
-      deselect();
-      div1.attr("class","selectedRadial");
-    }
-    function onClick2() {
-      deselect();
-      div2.attr("class","selectedRadial");
-    }
-    function onClick3() {
-      deselect();
-      div3.attr("class","selectedRadial");
+    function focus(label) {
+      markers.forEach(function (m) {
+        if (m.sna == label) {
+          map.setCenter(m.pos);
+        }
+      })
     }
     function labelFunction(val,min,max) {
-    }
-    function deselect() {
-      div1.attr("class","radial");
-      div2.attr("class","radial");
-      div3.attr("class","radial");
     }
     function start(label, title, percentage) {
       var div = document.createElement("div");
@@ -120,36 +112,22 @@ block content
       var rp1 = radialProgress(div)
       .label(label)
       .title(title)
-      .onClick(onClick1)
+      //- .onClick(console.log('test'))
       .diameter(170)
       .value(Math.abs(percentage))
       .render();
 
       document.getElementById("main").appendChild(div);
-      //- var rp2 = radialProgress(document.getElementById('div2'))
-      //- .label("RADIAL 2")
-      //- .onClick(onClick2)
-      //- .diameter(150)
-      //- .value(132)
-      //- .render();
-      //- var rp3 = radialProgress(document.getElementById('div3'))
-      //- .label("RADIAL 3")
-      //- .onClick(onClick3)
-      //- .diameter(150)
-      //- .minValue(100)
-      //- .maxValue(200)
-      //- .value(150)
-      //- .render();
     }
     function put_marker(d) {
       var icon_url = '';
-      if (d.diff_ratio > 15) {
+      if (d.diff_ratio > ratio_threshold_high ) {
         icon_url = '/images/5.png';
-      } else if ((15 >= d.diff_ratio) && (d.diff_ratio > 5)) {
+      } else if ((ratio_threshold_high >= d.diff_ratio) && (d.diff_ratio > ratio_threshold_low)) {
         icon_url = '/images/4.png';
-      } else if (Math.abs(d.diff_ratio) <= 5) {
+      } else if (Math.abs(d.diff_ratio) <= ratio_threshold_low) {
         icon_url = '/images/3.png';
-      } else if ((-5 > d.diff_ratio) && (d.diff_ratio >= -15)) {
+      } else if ((-ratio_threshold_low > d.diff_ratio) && (d.diff_ratio >= -ratio_threshold_high)) {
         icon_url = '/images/2.png';
       } else {
         icon_url = '/images/1.png';
@@ -165,9 +143,10 @@ block content
     socket.on('update data', function(data){
       remove_markers();
       remove_chart();
-      console.log('update');
+
       marker_data = data['marker'];
       chart_data = data['chart'];
+
       marker_data.forEach(function (d) {
         put_marker(d);
       })
