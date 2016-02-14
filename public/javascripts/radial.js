@@ -71,7 +71,7 @@ function radialProgress(parent) {
                 .attr("transform", "translate(" + _width/2 + "," + (_width + _fontSize) + ")")
                 .text(_label);
            var g = svg.select("g")
-                .attr("transform", "translate(" + _margin.left + "," + _margin.top + ")");
+                .attr("transform", "translate(" + _margin.left + 60 + "," + _margin.top + ")");
 
 
             _arc.endAngle(_currentArc);
@@ -88,7 +88,6 @@ function radialProgress(parent) {
                 .attr("class","arc2")
                 .attr("transform", "translate(" + _width/2 + "," + _width/2 + ")")
                 .attr("d", _arc2);
-
 
             enter.append("g").attr("class", "labels");
             var label = svg.select(".labels").selectAll(".label").data(data);

@@ -23,9 +23,6 @@ block content
             #db
             #outer(style='margin-top:40px; padding:10px')
               #main.row
-                #div1.
-                #div2.col-xs-12.col-sm-4.col-md-4
-                #div3.col-xs-12.col-sm-4.col-md-4
   script(src="/socket.io/socket.io.js")
   script(src="http://code.jquery.com/jquery-1.11.1.js")
   script(src="https://maps.googleapis.com/maps/api/js")
@@ -108,7 +105,7 @@ block content
     function start(label, title, percentage) {
       var div = document.createElement("div");
       div.className = 'col-xs-12 col-sm-4 col-md-4';
-      div.style = 'box-sizing:border-box;float:left;padding-left:8%;'
+      div.style = 'box-sizing:border-box;float:left;padding-left:3%;'
       var rp1 = radialProgress(div)
       .label(label)
       .title(title)
