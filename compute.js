@@ -35,7 +35,9 @@ module.exports = {
             markers.push({
               pos: {lat: current_doc[k]['lat'], lng: current_doc[k]['lng']},
               diff: sbi_diff,
+              sbi: current_doc[k]['sbi'],
               sna: current_doc[k]['sna'],
+              tot: current_doc[k]['tot'],
               diff_ratio: 100*sbi_diff/current_doc[k]['tot'],
               sbi_ratio: 100*current_doc[k]['sbi']/current_doc[k]['tot']
             });

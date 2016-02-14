@@ -75,10 +75,10 @@ block content
         title: data.sna
       });
       var infowindow = new google.maps.InfoWindow({
-        content: '<b>' + data.sna + '</b>'
+        content: '<b>' + data.sna + '</b><br/>Youbike存留量：' + data.sbi + '/' + data.tot
       });
       if (data.info) {
-        infowindow.content = infowindow.content + '<br/>' + data.info;
+        infowindow.content = infowindow.content + '<br/><b>' + data.info + '</b>';
         infowindow.open(map, marker);
       } else {
         marker.addListener('click', function() {
