@@ -20,7 +20,7 @@ block content
               b < -5%/10mins
               img(src='/images/1.png', style='margin-left:20px;margin-right:5px;')
               b < -15%/10mins
-            #outer(style='margin-top:40px; padding:10px')
+            #outer(style='margin-top:20px; padding:10px')
               #main.row
   script(src="/socket.io/socket.io.js")
   script(src="http://code.jquery.com/jquery-1.11.1.js")
@@ -96,13 +96,13 @@ block content
     function remove_chart() {
       document.getElementById('main').innerHTML = '';
     }
-    function focus(label) {
-      markers.forEach(function (m) {
-        if (m.sna == label) {
-          map.setCenter(m.pos);
-        }
-      })
-    }
+    //- function focus(label) {
+    //-   markers.forEach(function (m) {
+    //-     if (m.sna == label) {
+    //-       map.setCenter(m.pos);
+    //-     }
+    //-   })
+    //- }
     function labelFunction(val,min,max) {
     }
     function start(label, title, percentage) {
