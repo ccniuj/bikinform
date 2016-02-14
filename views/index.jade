@@ -143,13 +143,13 @@ block content
     }
     function put_marker(d) {
       var icon_url = '';
-      if (d.diff > 4) {
+      if (d.diff_ratio > 15) {
         icon_url = '/images/5.png';
-      } else if ((4 >= d.diff) && (d.diff > 2)) {
+      } else if ((15 >= d.diff_ratio) && (d.diff_ratio > 5)) {
         icon_url = '/images/4.png';
-      } else if (Math.abs(d.diff) <= 2) {
+      } else if (Math.abs(d.diff_ratio) <= 5) {
         icon_url = '/images/3.png';
-      } else if ((-2 > d.diff) && (d.diff >= -4)) {
+      } else if ((-5 > d.diff_ratio) && (d.diff_ratio >= -15)) {
         icon_url = '/images/2.png';
       } else {
         icon_url = '/images/1.png';
