@@ -84,6 +84,13 @@ app.use(function(req,res,next){
     next();
 });
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  // res.setHeader('Access-Control-Allow-Credentials', false);
+  next();
+});
+
 app.use('/', routes);
 app.use('/users', users);
 
@@ -117,6 +124,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;
